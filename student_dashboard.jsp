@@ -3,12 +3,21 @@
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="src.FeedbackDAO" %>
+<%@ page import="src.FAQDAO" %>
 <%
     String username = (String) session.getAttribute("username");
     List<Map<String, String>> appts = src.AppointmentDAO.getAppointmentsForStudent(username);
     List<Map<String, String>> feedbacks = src.FeedbackDAO.getFeedbackForStudent(username);
     LocalDateTime now = LocalDateTime.now();
     DateTimeFormatter displayDtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    String faqKeyword = request.getParameter("faqKeyword");
+    String faqCategory = request.getParameter("faqCategory");
+    String faqSort = request.getParameter("faqSort");
+    List<Map<String, String>> faqs = src.FAQDAO.searchFaqs(faqKeyword, faqCategory, faqSort);
+    String apptCategory = request.getParameter("apptCategory");
+    String apptStatus = request.getParameter("apptStatus");
+    String apptDateFrom = request.getParameter("apptDateFrom");
+    String apptDateTo = request.getParameter("apptDateTo");
 %>
 <!DOCTYPE html>
 <html>
@@ -48,6 +57,19 @@
         
         <div class="appointments-section">
             <h2>Your Appointments</h2>
+            <form method="get" class="appt-search-form" style="margin-bottom: 1em;">
+                <input type="text" name="apptCategory" placeholder="Category" value="<%= apptCategory != null ? apptCategory : "" %>" />
+                <select name="apptStatus">
+                    <option value="">All Statuses</option>
+                    <option value="pending" <%= "pending".equals(apptStatus) ? "selected" : "" %>>Pending</option>
+                    <option value="approved" <%= "approved".equals(apptStatus) ? "selected" : "" %>>Approved</option>
+                    <option value="completed" <%= "completed".equals(apptStatus) ? "selected" : "" %>>Completed</option>
+                    <option value="cancelled" <%= "cancelled".equals(apptStatus) ? "selected" : "" %>>Cancelled</option>
+                </select>
+                <input type="date" name="apptDateFrom" value="<%= apptDateFrom != null ? apptDateFrom : "" %>" />
+                <input type="date" name="apptDateTo" value="<%= apptDateTo != null ? apptDateTo : "" %>" />
+                <button type="submit" class="filter-btn">Filter</button>
+            </form>
             <div class="table-wrapper">
                 <table class="student-table" border="1" width="100%">
                     <thead>
@@ -60,13 +82,20 @@
                     <tbody>
                         <% for (Map<String, String> appt : appts) {
                             String status = appt.get("status");
-                            if ("completed".equalsIgnoreCase(status)) continue; // Skip completed appointments
+                            String category = appt.get("category");
+                            String datetime = appt.get("datetime");
+                            boolean show = true;
+                            if ("completed".equalsIgnoreCase(status)) continue;
+                            if (apptCategory != null && !apptCategory.isEmpty() && (category == null || !category.toLowerCase().contains(apptCategory.toLowerCase()))) show = false;
+                            if (apptStatus != null && !apptStatus.isEmpty() && (status == null || !status.equalsIgnoreCase(apptStatus))) show = false;
+                            if (apptDateFrom != null && !apptDateFrom.isEmpty() && datetime != null && datetime.compareTo(apptDateFrom) < 0) show = false;
+                            if (apptDateTo != null && !apptDateTo.isEmpty() && datetime != null && datetime.compareTo(apptDateTo) > 0) show = false;
+                            if (!show) continue;
                         %>
                             <tr>
-                                <td><%= appt.get("category") %></td>
+                                <td><%= category %></td>
                                 <td>
                                 <%
-                                    String datetime = appt.get("datetime");
                                     LocalDateTime apptTime = null;
                                     try {
                                         apptTime = LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -207,6 +236,31 @@
                         <button type="submit" class="btn-primary">Submit Feedback</button>
                     </div>
                 </form>
+            </div>
+        </div>
+        
+        <div class="faq-section">
+            <h2 id="faq-section">Frequently Asked Questions</h2>
+            <form method="get" class="faq-search-form" action="#faq-section" style="margin-bottom: 1em;">
+                <input type="text" name="faqKeyword" placeholder="Search by keyword..." value="<%= faqKeyword != null ? faqKeyword : "" %>" />
+                <input type="text" name="faqCategory" placeholder="Category" value="<%= faqCategory != null ? faqCategory : "" %>" />
+                <select name="faqSort">
+                    <option value="popularity" <%= "popularity".equals(faqSort) ? "selected" : "" %>>Most Popular</option>
+                    <option value="newest" <%= "newest".equals(faqSort) ? "selected" : "" %>>Newest</option>
+                </select>
+                <button type="submit">Search</button>
+            </form>
+            <div class="faq-list">
+                <% for (Map<String, String> faq : faqs) { %>
+                    <div class="faq-card">
+                        <div class="faq-question"><b>Q:</b> <%= faq.get("question") %></div>
+                        <div class="faq-answer"><b>A:</b> <%= faq.get("answer") %></div>
+                        <div class="faq-meta-row">
+                            <span class="faq-meta"><b>Category:</b> <%= faq.get("category") %></span>
+                            <span class="faq-meta"><b>Popularity:</b> <%= faq.get("popularity") %></span>
+                        </div>
+                    </div>
+                <% } %>
             </div>
         </div>
     </div>

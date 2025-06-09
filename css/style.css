@@ -7,8 +7,8 @@ body {
 
 /* Use a larger container for admin dashboard */
 .container {
-    max-width: 1200px;
-    margin: 20px auto;
+    max-width: 900px;
+    margin: 40px auto;
     background: #fff;
     padding: 2em;
     border-radius: 16px;
@@ -62,16 +62,16 @@ input, select {
     box-sizing: border-box;
 }
 
-button { 
+button, .btn-primary, .faq-action-btn, .faq-actions button, .open-modal-btn, .btn-send, .login-form button, .filter-btn {
     padding: 0.5em; 
     margin-bottom: 1em; 
     border-radius: 4px; 
-    border: 1px solid #bbb; 
+    border: none; 
     cursor: pointer;
     transition: background 0.2s;
 }
 
-button:hover { 
+button:hover, .btn-primary:hover, .faq-action-btn:hover, .faq-actions button:hover, .open-modal-btn:hover, .btn-send:hover, .login-form button:hover, .filter-btn:hover {
     background: #18304b; 
 }
 
@@ -734,4 +734,117 @@ table.admin-table tr:hover {
         width: 100%;
         min-width: auto;
     }
+}
+
+.narrow-form, .narrow-table {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.appt-search-form, .faq-form {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.faq-table, .appointments-section > .table-wrapper > table {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.faq-form button[type="submit"] {
+    width: 120px;
+    align-self: center;
+}
+
+.faq-list {
+    max-width: 600px;
+    margin: 24px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.faq-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 18px 22px 12px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.faq-question {
+    font-weight: bold;
+    font-size: 1.08em;
+    margin-bottom: 2px;
+}
+.faq-answer {
+    margin-bottom: 8px;
+    white-space: pre-line;
+    color: #222;
+}
+.faq-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
+    margin-top: 6px;
+}
+.faq-meta {
+    color: #295b8d;
+    font-size: 0.98em;
+}
+.faq-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+}
+
+.faq-actions button, .faq-action-btn {
+    min-width: 64px;
+    padding: 6px 14px;
+    font-size: 14px;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+    transition: background 0.18s, box-shadow 0.18s;
+    box-shadow: none;
+    cursor: pointer;
+}
+.faq-actions button:hover, .faq-action-btn:hover {
+    box-shadow: 0 2px 8px rgba(41,91,141,0.08);
+    border-color: #295b8d;
+}
+
+.faq-actions form {
+    display: flex;
+    align-items: center;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.filter-btn {
+    width: 160px;
+    min-width: 120px;
+    max-width: 220px;
+    margin: 0 auto;
+    display: block;
+    background: #2b4a6b;
+    color: #fff;
+    border: none;
+    padding: 12px 0;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.filter-btn:hover {
+    background: #18304b;
 }

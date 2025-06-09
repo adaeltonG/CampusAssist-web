@@ -51,6 +51,14 @@
         <servlet-name>SubmitFeedbackServlet</servlet-name>
         <url-pattern>/SubmitFeedbackServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>AdminFAQServlet</servlet-name>
+        <servlet-class>src.AdminFAQServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminFAQServlet</servlet-name>
+        <url-pattern>/AdminFAQServlet</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>

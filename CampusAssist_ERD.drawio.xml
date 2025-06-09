@@ -31,7 +31,7 @@
         <mxCell id="10" value="faq" style="swimlane;fillColor=#f8cecc;strokeColor=#b85450;rounded=1;" parent="1" vertex="1">
           <mxGeometry x="60" y="560" width="200" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="11" value="id : INTEGER (PK) question : TEXT (NOT NULL) answer : TEXT (NOT NULL) category : TEXT popularity : INTEGER (DEFAULT 0)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;" parent="10" vertex="1">
+        <mxCell id="11" value="id : INTEGER (PK, AUTOINCREMENT) question : TEXT (NOT NULL) answer : TEXT (NOT NULL) category : TEXT popularity : INTEGER (DEFAULT 0)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;" parent="10" vertex="1">
           <mxGeometry x="10" y="30" width="180" height="100" as="geometry" />
         </mxCell>
         <mxCell id="12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#000000;" parent="1" source="2" target="6" edge="1">

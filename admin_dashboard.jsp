@@ -1,9 +1,20 @@
 <%@ page import="java.util.*" %>
 <%@ page import="src.AppointmentDAO" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="src.FeedbackDAO" %>
+<%@ page import="src.FAQDAO" %>
 <%
     List<Map<String, String>> appts = src.AppointmentDAO.getAllAppointments();
     DateTimeFormatter displayDtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    List<Map<String, String>> feedbacks = src.FeedbackDAO.getAllFeedback();
+    Map<String, Integer> trends = src.FeedbackDAO.getFeedbackTrends();
+    String[] categories = {"Academic", "Financial", "Mental Health"};
+    List<Map<String, String>> faqs = src.FAQDAO.getAllFaqs();
+    String apptStudent = request.getParameter("apptStudent");
+    String apptCategory = request.getParameter("apptCategory");
+    String apptStatus = request.getParameter("apptStatus");
+    String apptDateFrom = request.getParameter("apptDateFrom");
+    String apptDateTo = request.getParameter("apptDateTo");
 %>
 <!DOCTYPE html>
 <html>
@@ -19,6 +30,23 @@
         
         <div class="appointments-section">
             <h2>All Appointments</h2>
+            <form method="get" class="appt-search-form" style="margin-bottom: 1em;">
+                <input type="text" name="apptStudent" placeholder="Student Username" value="<%= apptStudent != null ? apptStudent : "" %>" />
+                <select name="apptCategory">
+                    <option value="">All Categories</option>
+                    <option value="Academic" <%= "Academic".equals(apptCategory) ? "selected" : "" %>>Academic</option>
+                    <option value="Financial" <%= "Financial".equals(apptCategory) ? "selected" : "" %>>Financial</option>
+                    <option value="Mental Health" <%= "Mental Health".equals(apptCategory) ? "selected" : "" %>>Mental Health</option>
+                </select>
+                <select name="apptStatus">
+                    <option value="">All Statuses</option>
+                    <option value="pending" <%= "pending".equals(apptStatus) ? "selected" : "" %>>Pending</option>
+                    <option value="approved" <%= "approved".equals(apptStatus) ? "selected" : "" %>>Approved</option>
+                    <option value="completed" <%= "completed".equals(apptStatus) ? "selected" : "" %>>Completed</option>
+                    <option value="cancelled" <%= "cancelled".equals(apptStatus) ? "selected" : "" %>>Cancelled</option>
+                </select>
+                <button type="submit" class="filter-btn">Filter</button>
+            </form>
             <div class="table-wrapper">
                 <table class="admin-table" width="100%">
                     <thead>
@@ -32,13 +60,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% for (Map<String, String> appt : appts) { %>
+                        <% for (Map<String, String> appt : appts) {
+                            String student = appt.get("username");
+                            String category = appt.get("category");
+                            String status = appt.get("status");
+                            String datetime = appt.get("datetime");
+                            boolean show = true;
+                            if (apptStudent != null && !apptStudent.isEmpty() && (student == null || !student.toLowerCase().contains(apptStudent.toLowerCase()))) show = false;
+                            if (apptCategory != null && !apptCategory.isEmpty() && (category == null || !category.toLowerCase().contains(apptCategory.toLowerCase()))) show = false;
+                            if (apptStatus != null && !apptStatus.isEmpty() && (status == null || !status.equalsIgnoreCase(apptStatus))) show = false;
+                            if (apptDateFrom != null && !apptDateFrom.isEmpty() && datetime != null && datetime.compareTo(apptDateFrom) < 0) show = false;
+                            if (apptDateTo != null && !apptDateTo.isEmpty() && datetime != null && datetime.compareTo(apptDateTo) > 0) show = false;
+                            if (!show) continue;
+                        %>
                             <tr>
-                                <td><%= appt.get("username") %></td>
-                                <td><%= appt.get("category") %></td>
+                                <td><%= student %></td>
+                                <td><%= category %></td>
                                 <td>
                                     <%
-                                        String datetime = appt.get("datetime");
                                         java.time.LocalDateTime apptTime = null;
                                         try {
                                             apptTime = java.time.LocalDateTime.parse(datetime, java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -54,7 +93,6 @@
                                 </td>
                                 <td class="status-cell">
                                     <%
-                                        String status = appt.get("status");
                                         String statusLabel = "-";
                                         String statusColor = "";
                                         if (status != null) {
@@ -128,12 +166,6 @@
     <div class="container">
         <div class="feedback-section">
             <h2>Feedback & Reports</h2>
-            <%@ page import="src.FeedbackDAO" %>
-            <%
-                List<Map<String, String>> feedbacks = src.FeedbackDAO.getAllFeedback();
-                Map<String, Integer> trends = src.FeedbackDAO.getFeedbackTrends();
-                String[] categories = {"Academic", "Financial", "Mental Health"};
-            %>
             
             <div class="trends-section">
                 <h3>Feedback Trends</h3>
@@ -211,6 +243,52 @@
         </div>
     </div>
     
+    <div class="container">
+        <div class="faq-section">
+            <h2 id="faq-section">Manage FAQs</h2>
+            <form action="AdminFAQServlet#faq-section" method="post" class="faq-form">
+                <input type="hidden" name="action" value="add" />
+                <input type="text" name="question" placeholder="Question" required />
+                <input type="text" name="answer" placeholder="Answer" required />
+                <select name="category" required>
+                    <option value="Academic">Academic</option>
+                    <option value="Financial">Financial</option>
+                    <option value="Mental Health">Mental Health</option>
+                </select>
+                <button type="submit">Add FAQ</button>
+            </form>
+            <div class="faq-list">
+                <% for (Map<String, String> faq : faqs) { %>
+                    <div class="faq-card">
+                        <div class="faq-question"><b>Q:</b> <%= faq.get("question") %></div>
+                        <div class="faq-answer"><b>A:</b> <%= faq.get("answer") %></div>
+                        <div class="faq-meta-row">
+                            <span class="faq-meta"><b>Category:</b> <%= faq.get("category") %></span>
+                            <span class="faq-meta"><b>Popularity:</b> <%= faq.get("popularity") %></span>
+                            <div class="faq-actions">
+                                <form action="AdminFAQServlet" method="post" style="display:inline;">
+                                    <input type="hidden" name="action" value="delete" />
+                                    <input type="hidden" name="id" value="<%= faq.get("id") %>" />
+                                    <button type="submit" class="faq-action-btn">Delete</button>
+                                </form>
+                                <button type="button" class="faq-action-btn" onclick="showEditForm('<%= faq.get("id") %>')">Edit</button>
+                            </div>
+                        </div>
+                        <form id="edit-faq-form-<%= faq.get("id") %>" action="AdminFAQServlet" method="post" style="display:none; margin-top:8px;">
+                            <input type="hidden" name="action" value="update" />
+                            <input type="hidden" name="id" value="<%= faq.get("id") %>" />
+                            <input type="text" name="question" value="<%= faq.get("question") %>" required />
+                            <input type="text" name="answer" value="<%= faq.get("answer") %>" required />
+                            <input type="text" name="category" value="<%= faq.get("category") %>" required />
+                            <button type="submit">Save</button>
+                            <button type="button" onclick="hideEditForm('<%= faq.get("id") %>')">Cancel</button>
+                        </form>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Modal logic
@@ -268,6 +346,13 @@
             });
         });
     });
+    
+    function showEditForm(id) {
+        document.getElementById('edit-faq-form-' + id).style.display = 'block';
+    }
+    function hideEditForm(id) {
+        document.getElementById('edit-faq-form-' + id).style.display = 'none';
+    }
     </script>
 </body>
 </html>
