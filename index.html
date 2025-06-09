@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Campus Assist</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <script>
+        if (window.location.search.includes('error=1')) {
+          document.write('<div style="color: red; margin-bottom: 1em;">Login failed. Please check your username and password.</div>');
+        }
+      </script>
+    <div class="container">
+        <h1>Campus Assist Management</h1>
+        <h2 class="login-title">Login</h2>
+        <form action="LoginServlet" method="post" class="login-form">
+            <div class="login-field">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="login-field">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

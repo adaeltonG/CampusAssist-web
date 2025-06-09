@@ -1,0 +1,19 @@
+CampusAssistWeb/
+│
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── your/package/structure/
+│       │       ├── model/          # POJOs (Student, Admin, Appointment, etc.)
+│       │       ├── dao/            # Data Access Objects (JDBC logic)
+│       │       └── servlet/        # Servlets (LoginServlet, BookingServlet, etc.)
+│       ├── resources/
+│       └── webapp/
+│           ├── WEB-INF/
+│           │   └── web.xml         # Deployment descriptor
+│           ├── css/                # Stylesheets
+│           ├── js/                 # JavaScript (optional)
+│           └── *.jsp               # JSP pages (login.jsp, dashboard.jsp, etc.)
+│
+├── pom.xml                         # Maven config
+└── README.md
