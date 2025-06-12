@@ -2,10 +2,8 @@ package src;
 
 import java.io.IOException;
 import jakarta.servlet.ServletException;
-// import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
-// @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
@@ -29,6 +27,6 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("student_dashboard.jsp");
             return;
         }
-        response.sendRedirect("index.html?error=1"); // login failed
+        response.sendRedirect("index.html?error=1");
     }
 }

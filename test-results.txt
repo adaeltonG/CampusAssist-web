@@ -1,0 +1,54 @@
+
+Thanks for using JUnit! Support its development at https://junit.org/sponsoring
+
+Feedback submitted successfully for appointment f929e1d9-fc38-4221-8c75-86b99b753944
+Error: Can only provide feedback for completed appointments.
+Appointment 6eeaffed-54f2-42bc-b136-f28e996eedfa approved by admin Admin User
+Appointment 9bdfedb1-dcc9-4612-a35c-7eae521b84b4 rescheduled by admin Admin User
+Appointment fadf9d28-b8bf-4c65-9cdd-d64116e35313 cancelled by admin Admin User
+Hardcoded data loaded: 2 students, 2 admins, 3 appointments.
+Hardcoded data loaded: 2 students, 2 admins, 3 appointments.
+New appointment scheduled successfully: 0630024e-33c2-475c-b535-57bfa660980f
+Hardcoded data loaded: 2 students, 2 admins, 3 appointments.
+[36m.[0m
+[36m+--[0m [36mJUnit Jupiter[0m [32m[OK][0m
+[36m| +--[0m [36mStudentTest[0m [32m[OK][0m
+[36m| | +--[0m [34mtestProvideFeedback()[0m [32m[OK][0m
+[36m| | +--[0m [34mtestAddAndGetAppointments()[0m [32m[OK][0m
+[36m| | +--[0m [34mtestGetUpcomingAndPastAppointments()[0m [32m[OK][0m
+[36m| | '--[0m [34mtestProvideFeedbackForInvalidAppointment()[0m [32m[OK][0m
+[36m| +--[0m [36mAdminTest[0m [32m[OK][0m
+[36m| | +--[0m [34mtestGetAppointmentStatistics()[0m [32m[OK][0m
+[36m| | +--[0m [34mtestGetAppointmentsByCategory()[0m [32m[OK][0m
+[36m| | +--[0m [34mtestApproveAppointment()[0m [32m[OK][0m
+[36m| | +--[0m [34mtestRescheduleAppointment()[0m [32m[OK][0m
+[36m| | '--[0m [34mtestCancelAppointment()[0m [32m[OK][0m
+[36m| +--[0m [36mAppointmentTest[0m [32m[OK][0m
+[36m| | +--[0m [34mtestToString()[0m [32m[OK][0m
+[36m| | +--[0m [34mtestSetAndGetFeedback()[0m [32m[OK][0m
+[36m| | +--[0m [34mtestAppointmentCreation()[0m [32m[OK][0m
+[36m| | '--[0m [34mtestSetStatusAndDateTime()[0m [32m[OK][0m
+[36m| +--[0m [36mCampusAssistSystemTest[0m [32m[OK][0m
+[36m| | +--[0m [34mtestLoginStudentAndAdmin()[0m [32m[OK][0m
+[36m| | +--[0m [34mtestRequestAppointment()[0m [32m[OK][0m
+[36m| | '--[0m [34mtestCheckReminders()[0m [32m[OK][0m
+[36m| '--[0m [36mFeedbackTest[0m [32m[OK][0m
+[36m|   +--[0m [34mtestFeedbackCreation()[0m [32m[OK][0m
+[36m|   '--[0m [34mtestToString()[0m [32m[OK][0m
+[36m+--[0m [36mJUnit Vintage[0m [32m[OK][0m
+[36m'--[0m [36mJUnit Platform Suite[0m [32m[OK][0m
+
+Test run finished after 201 ms
+[         8 containers found      ]
+[         0 containers skipped    ]
+[         8 containers started    ]
+[         0 containers aborted    ]
+[         8 containers successful ]
+[         0 containers failed     ]
+[        18 tests found           ]
+[         0 tests skipped         ]
+[        18 tests started         ]
+[         0 tests aborted         ]
+[        18 tests successful      ]
+[         0 tests failed          ]
+

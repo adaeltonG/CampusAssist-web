@@ -7,7 +7,7 @@
     List<Map<String, String>> appts = src.AppointmentDAO.getAllAppointments();
     DateTimeFormatter displayDtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     List<Map<String, String>> feedbacks = src.FeedbackDAO.getAllFeedback();
-    Map<String, Integer> trends = src.FeedbackDAO.getFeedbackTrends();
+    Map<String, Integer> trends = src.FAQDAO.getFaqTrends();
     String[] categories = {"Academic", "Financial", "Mental Health"};
     List<Map<String, String>> faqs = src.FAQDAO.getAllFaqs();
     String apptStudent = request.getParameter("apptStudent");

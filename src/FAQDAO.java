@@ -108,4 +108,25 @@ public class FAQDAO {
         }
         return faqs;
     }
+
+    public static Map<String, Integer> getFaqTrends() {
+        Map<String, Integer> trends = new HashMap<>();
+        String[] categories = {"Academic", "Financial", "Mental Health"};
+        String sql = "SELECT category, COUNT(*) as count FROM faq GROUP BY category";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                String category = rs.getString("category");
+                int count = rs.getInt("count");
+                trends.put(category, count);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        for (String cat : categories) {
+            trends.putIfAbsent(cat, 0);
+        }
+        return trends;
+    }
 } 
